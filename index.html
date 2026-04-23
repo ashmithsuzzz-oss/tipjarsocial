@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Minima Tip Jar + Wall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    #wall-section {
+      margin-top: 40px;
+      text-align: center;
+      color: white;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(10, 30px);
+      gap: 4px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .pixel {
+      width: 30px;
+      height: 30px;
+      background: #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- TIP JAR -->
+  <div class="card">
+    <h2>💸 Minima Tip Jar</h2>
+
+    <p class="desc">Send tips + draw on the wall 🎨</p>
+
+    <p id="tipStatus">Connecting...</p>
+
+    <button onclick="sendTip(0.0001)">☕ Tip 0.0001</button>
+    <button onclick="sendTip(0.001)">🍕 Tip 0.001</button>
+    <button onclick="sendTip(0.01)">🚀 Tip 0.01</button>
+
+    <input id="customAmount" placeholder="Custom amount">
+    <button class="secondary" onclick="sendCustom()">Send Custom</button>
+
+    <p class="address">
+      MxG086HDR94WWW3ZJE24E807D5SQ7F5WUDQFNN9N221P89D698ZET9YK8832YJQ
+    </p>
+
+    <div class="links">
+      <a href="faq.html">FAQ</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+
+  <!-- WALL -->
+  <div id="wall-section">
+    <h2>🎨 Supporters Pixel Wall</h2>
+
+    <p id="wallStatus">Connecting...</p>
+
+    <input type="color" id="colorPicker" value="#ff0000">
+
+    <div id="grid"></div>
+  </div>
+
+</div>
+
+<!-- SUCCESS POPUP -->
+<div id="successPopup" class="popup hidden">
+  <div class="popup-box">
+    <h2>🎉</h2>
+    <p>Tip Sent Successfully!</p>
+  </div>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
