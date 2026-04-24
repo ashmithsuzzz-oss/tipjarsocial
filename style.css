@@ -92,3 +92,21 @@ textarea {
   padding:20px;
   border-radius:15px;
 }
+.title {
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.tagline {
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.95;
+  margin-bottom: 8px;
+}
+
+.subtext {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-bottom: 15px;
+}
