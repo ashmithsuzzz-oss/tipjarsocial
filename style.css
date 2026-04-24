@@ -36,46 +36,20 @@ button {
   cursor:pointer;
 }
 
-.secondary {
-  background:rgba(255,255,255,0.2);
-  color:white;
-}
-
-input, textarea {
+textarea {
   width:100%;
   padding:10px;
   margin-top:10px;
   border-radius:10px;
   border:none;
-}
-
-textarea {
   height:100px;
 }
 
-.msgdiv {
+.msg {
   background:white;
   color:black;
   padding:8px;
   border-radius:10px;
   margin:10px 0;
-}
-
-.popup {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.5);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.hidden {
-  display:none;
-}
-
-.popup-box {
-  background:white;
-  padding:20px;
-  border-radius:15px;
+  font-size:12px;
 }
