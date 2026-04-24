@@ -15,25 +15,113 @@
     <h2>💬 Minima Feed</h2>
 
     <p class="desc">
-      Share your message on-chain. Messages stay visible for 24 hours.
+      Share your message on-chain. Messages remain visible for 24 hours.
     </p>
-
-    <p id="status">Connecting...</p>
 
     <!-- Message input -->
     <textarea id="id_sendmsg" placeholder="Write your message..."></textarea>
 
-    <button onclick="sendMessage()">Post Message</button>
+    <button onclick="sendMessage()">Send Message</button>
 
     <div id="id_list_messages"></div>
 
-    <button onclick="loadMessages()">Refresh Feed</button>
+    <button class="secondary" onclick="window.location.reload()">Refresh</button>
 
   </div>
 </div>
 
 <script src="minimask.js"></script>
-<script src="app.js"></script>
+
+<script>
+
+var WALL_ADDRESS = "0xFFEEDDFFEEDD99";
+
+window.onload = function () {
+	
+	if(typeof MINIMASK !== "undefined"){
+		
+		MINIMASK.init(function(initmsg){
+			
+			console.log("MiniMask : "+JSON.stringify(initmsg,null,2));
+			
+			if(initmsg.event == "MINIMASK_INIT"){
+				
+				if(!initmsg.data.data.loggedon){
+					alert("You must be logged into MiniMask to send messages..");							
+				}
+				
+				loadMessages();
+			}
+		});
+		
+	}else{
+		console.log("MINIMASK extension not active!");	
+	}
+}
+
+// SEND MESSAGE (UNCHANGED)
+function sendMessage(){
+	
+	var msg=id_sendmsg.value.trim();
+	
+	if(msg == ""){
+		alert("Blank message not allowed..");
+		return;
+	}else if(msg.length>1024){
+		alert("Message too long..");
+		return;
+	}
+	
+	var cdate = new Date().toLocaleString();
+	
+	var state = {};
+	state[99]  = "["+cdate+"\n\n"+encodeURI(msg)+"]";
+	
+	MINIMASK.account.send("0.00000001", WALL_ADDRESS, "0x00", state, function(sendresp){
+		
+		if(sendresp.pending){
+			alert("Approve in MiniMask..");	
+			id_sendmsg.value = "";
+		}else{
+			alert(sendresp.error);
+		}
+	});
+}
+
+// SANITIZE
+function sanitizeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// LOAD MESSAGES (UNCHANGED)
+function loadMessages(){
+	
+	MINIMASK.meg.listcoins(WALL_ADDRESS, "", "", function(resp){
+		
+		var html = "";
+		
+		var len = resp.data.length;
+		if(len == 0){
+			html = "No Messages yet";
+		}
+		
+		for(var i=0;i<len;i++){
+			
+			var coin = resp.data[i];
+			
+			var decmsg 	= decodeURI(coin.state[99]);
+			var msg		= decmsg.substring(1,decmsg.length-1);
+			
+			html += "<div class='msg'>"+sanitizeHTML(msg)+"</div>";
+		}
+		
+		id_list_messages.innerHTML = html;
+	});
+}
+
+</script>
 
 </body>
 </html>
