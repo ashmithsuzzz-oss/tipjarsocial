@@ -24,10 +24,6 @@ body {
   text-align:center;
 }
 
-.nav button {
-  margin:5px;
-}
-
 button {
   width:100%;
   padding:10px;
@@ -51,27 +47,18 @@ input, textarea {
   margin-top:10px;
   border-radius:10px;
   border:none;
-  outline:none;
 }
 
 textarea {
   height:100px;
-  resize:none;
 }
 
-.address {
-  font-size:10px;
-  margin-top:10px;
-  word-break:break-all;
-}
-
-.msg {
+.msgdiv {
   background:white;
   color:black;
   padding:8px;
   border-radius:10px;
   margin:10px 0;
-  font-size:12px;
 }
 
 .popup {
@@ -91,22 +78,4 @@ textarea {
   background:white;
   padding:20px;
   border-radius:15px;
-}
-.title {
-  margin-bottom: 10px;
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.tagline {
-  font-size: 14px;
-  line-height: 1.5;
-  opacity: 0.95;
-  margin-bottom: 8px;
-}
-
-.subtext {
-  font-size: 12px;
-  opacity: 0.75;
-  margin-bottom: 15px;
 }
