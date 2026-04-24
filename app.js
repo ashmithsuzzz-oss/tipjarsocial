@@ -2,78 +2,100 @@ const ADDRESS = "MxG086HDR94WWW3ZJE24E807D5SQ7F5WUDQFNN9N221P89D698ZET9YK8832YJQ
 
 let status;
 
-window.onload = function(){
+function getWalletAddress(res) {
+    if (!res || !res.status) return null;
 
-  status = document.getElementById("status");
+    const d = res.data;
 
-  if(typeof MINIMASK !== "undefined"){
+    if (typeof d === "string") return d;
+    if (typeof d === "object") return d.address || d.data;
 
-    MINIMASK.init(function(msg){
+    return null;
+}
 
-      if(msg.event === "MINIMASK_INIT"){
+window.onload = function () {
 
-        if(!msg.data.data.loggedon){
-          status.innerText = "❌ Not logged in";
-          return;
-        }
+    status = document.getElementById("status");
 
-        status.innerText = "✅ Connected";
-      }
-    });
+    if (typeof MINIMASK !== "undefined") {
 
-  } else {
-    status.innerText = "❌ MiniMask not found";
-  }
+        MINIMASK.init(function (msg) {
+
+            if (msg.event === "MINIMASK_INIT") {
+
+                if (!msg.data || !msg.data.data || !msg.data.data.loggedon) {
+                    status.innerText = "❌ Not logged in";
+                    return;
+                }
+
+                status.innerText = "✅ Connected";
+            }
+        });
+
+    } else {
+        status.innerText = "❌ MiniMask not found";
+    }
 };
 
-function sendTip(amount){
+function showSuccess() {
+    const popup = document.getElementById("successPopup");
 
-  let receiver = document.getElementById("receiverAddress").value.trim();
+    popup.classList.remove("hidden");
 
-  // fallback to default address if empty
-  if(receiver === ""){
-    receiver = ADDRESS;
-  }
+    setTimeout(() => {
+        popup.classList.add("hidden");
+    }, 2500);
+}
 
-  // basic validation
-  if(receiver.length < 10){
-    alert("Invalid address");
-    return;
-  }
+function sendTip(amount) {
 
-  MINIMASK.account.send(
-    amount,
-    receiver,
-    "0x00",
-    {},
-    function(resp){
+    MINIMASK.account.getAddress(function (res) {
 
-      if(resp.pending){
-        status.innerText = "⏳ Approve...";
-      }
-      else if(resp.success){
-        status.innerText = "✅ Sent!";
-        showPopup();
-      }
-      else{
-        status.innerText = "❌ Failed";
-      }
+        const wallet = getWalletAddress(res);
+
+        if (!wallet) {
+            alert("Wallet error");
+            return;
+        }
+
+        const state = {};
+        state[0] = "tip";
+
+        status.innerText = "⏳ Waiting...";
+
+        MINIMASK.account.send(
+            amount,
+            ADDRESS,
+            "0x00",
+            state,
+            function (resp) {
+
+               if (resp.pending) {
+
+    status.innerText = "⏳ Approve in MiniMask...";
+
+} else if (resp.success) {
+
+    status.innerText = "✅ Tip Sent!";
+    showSuccess();
+
+} else {
+
+    status.innerText = "❌ Transaction Failed";
+               }
+            }
+        );
+    });
+}
+
+function sendCustom() {
+
+    const val = document.getElementById("customAmount").value;
+
+    if (!val || isNaN(val)) {
+        alert("Enter valid amount");
+        return;
     }
-  );
-}
 
-function sendCustom(){
-  let val = customAmount.value;
-
-  if(!val || isNaN(val)){
-    alert("Invalid amount");
-    return;
-  }
-
-  sendTip(parseFloat(val));
-}
-
-function showPopup(){
-  popup.classList.remove("hidden");
-  setTimeout(()=>popup.classList.add("hidden"),2000);
+    sendTip(parseFloat(val));
 }
