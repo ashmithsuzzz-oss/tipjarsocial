@@ -28,9 +28,22 @@ window.onload = function(){
 
 function sendTip(amount){
 
+  let receiver = document.getElementById("receiverAddress").value.trim();
+
+  // fallback to default address if empty
+  if(receiver === ""){
+    receiver = ADDRESS;
+  }
+
+  // basic validation
+  if(receiver.length < 10){
+    alert("Invalid address");
+    return;
+  }
+
   MINIMASK.account.send(
     amount,
-    ADDRESS,
+    receiver,
     "0x00",
     {},
     function(resp){
