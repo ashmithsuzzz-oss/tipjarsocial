@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Minima Super App</title>
+  <title>Minima Feed</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="style.css">
@@ -12,72 +12,28 @@
 <div class="container">
   <div class="card">
 
-    <h2 class="title">💸 Minima Super App</h2>
+    <h2>💬 Minima Feed</h2>
 
-    <p class="tagline">
-      Empower creators with direct Minima tips — simply paste their address and send instantly.
+    <p class="desc">
+      Share your message on-chain. Messages stay visible for 24 hours.
     </p>
 
-    <p class="subtext">
-      Make your voice part of the Minima Feed, where messages live on-chain for 24 hours.
-    </p>
+    <p id="status">Connecting...</p>
 
-    <!-- NAV -->
-    <div style="margin-bottom:15px;">
-      <button onclick="showTab('tip')">Tip Jar</button>
-      <button onclick="showTab('wall')">Minima Feed</button>
-    </div>
+    <!-- Message input -->
+    <textarea id="id_sendmsg" placeholder="Write your message..."></textarea>
 
-    <!-- ================= TIP ================= -->
-    <div id="tipTab">
+    <button onclick="sendMessage()">Post Message</button>
 
-      <p id="status">Connecting...</p>
+    <div id="id_list_messages"></div>
 
-      <input id="receiverAddress" placeholder="Paste Minima address (optional)">
+    <button onclick="loadMessages()">Refresh Feed</button>
 
-      <button onclick="sendTip(0.0001)">☕ Tip 0.0001</button>
-      <button onclick="sendTip(0.001)">🍕 Tip 0.001</button>
-      <button onclick="sendTip(0.01)">🚀 Tip 0.01</button>
-
-      <input id="customAmount" placeholder="Custom amount">
-      <button class="secondary" onclick="sendCustom()">Send Custom</button>
-
-    </div>
-
-    <!-- ================= WALL ================= -->
-    <div id="wallTab" style="display:none;">
-
-      <textarea id="id_sendmsg" placeholder="Write message..."></textarea>
-
-      <button onclick="sendMessage()">Send Message</button>
-
-      <div id="id_list_messages"></div>
-
-      <button onclick="loadMessages()">Refresh</button>
-
-    </div>
-
-  </div>
-</div>
-
-<!-- POPUP -->
-<div id="successPopup" class="popup hidden">
-  <div class="popup-box">
-    <h2>🎉</h2>
-    <p>Success!</p>
   </div>
 </div>
 
 <script src="minimask.js"></script>
 <script src="app.js"></script>
-<script src="wall.js"></script>
-
-<script>
-function showTab(tab){
-  document.getElementById("tipTab").style.display = (tab==="tip")?"block":"none";
-  document.getElementById("wallTab").style.display = (tab==="wall")?"block":"none";
-}
-</script>
 
 </body>
 </html>
