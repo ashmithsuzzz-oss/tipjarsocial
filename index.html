@@ -4,11 +4,7 @@
   <title>Minima Super App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- TipJar Style -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Wall extra styles -->
-  <link rel="stylesheet" href="wall.css">
 </head>
 
 <body>
@@ -18,13 +14,13 @@
 
     <h2 class="title">💸 Minima Super App</h2>
 
-<p class="tagline">
-Empower creators with direct Minima tips — simply paste their address and send instantly.
-</p>
+    <p class="tagline">
+      Empower creators with direct Minima tips — simply paste their address and send instantly.
+    </p>
 
-<p class="subtext">
-Make your voice part of the Minima Feed, where messages live on-chain for 24 hours.
-</p>
+    <p class="subtext">
+      Make your voice part of the Minima Feed, where messages live on-chain for 24 hours.
+    </p>
 
     <!-- NAV -->
     <div style="margin-bottom:15px;">
@@ -32,29 +28,26 @@ Make your voice part of the Minima Feed, where messages live on-chain for 24 hou
       <button onclick="showTab('wall')">Minima Feed</button>
     </div>
 
-    <!-- ================= TIP JAR ================= -->
+    <!-- ================= TIP ================= -->
     <div id="tipTab">
 
       <p id="status">Connecting...</p>
 
-<!-- ✅ ADDRESS INPUT (ADD HERE) -->
-<input id="receiverAddress" placeholder="Paste receiver address">
+      <input id="receiverAddress" placeholder="Paste Minima address (optional)">
 
-<!-- Tip buttons -->
-<button onclick="sendTip(0.0001)">☕ Tip 0.0001</button>
-<button onclick="sendTip(0.001)">🍕 Tip 0.001</button>
-<button onclick="sendTip(0.01)">🚀 Tip 0.01</button>
+      <button onclick="sendTip(0.0001)">☕ Tip 0.0001</button>
+      <button onclick="sendTip(0.001)">🍕 Tip 0.001</button>
+      <button onclick="sendTip(0.01)">🚀 Tip 0.01</button>
 
-<input id="customAmount" placeholder="Custom amount">
-<button class="secondary" onclick="sendCustom()">Send Custom</button>
+      <input id="customAmount" placeholder="Custom amount">
+      <button class="secondary" onclick="sendCustom()">Send Custom</button>
 
     </div>
 
     <!-- ================= WALL ================= -->
     <div id="wallTab" style="display:none;">
 
-      <textarea id="id_sendmsg" placeholder="Write message..."
-        style="width:100%;height:100px;"></textarea>
+      <textarea id="id_sendmsg" placeholder="Write message..."></textarea>
 
       <button onclick="sendMessage()">Send Message</button>
 
@@ -75,7 +68,6 @@ Make your voice part of the Minima Feed, where messages live on-chain for 24 hou
   </div>
 </div>
 
-<!-- Scripts -->
 <script src="minimask.js"></script>
 <script src="app.js"></script>
 <script src="wall.js"></script>
