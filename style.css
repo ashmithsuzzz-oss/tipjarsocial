@@ -1,0 +1,94 @@
+body {
+  margin:0;
+  font-family: sans-serif;
+  background: linear-gradient(135deg,#6c5ce7,#a29bfe);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+
+.container {
+  width:100%;
+  padding:20px;
+}
+
+.card {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px);
+  border-radius:20px;
+  padding:20px;
+  max-width:350px;
+  margin:auto;
+  color:white;
+  text-align:center;
+}
+
+.nav button {
+  margin:5px;
+}
+
+button {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  background:white;
+  color:#6c5ce7;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.secondary {
+  background:rgba(255,255,255,0.2);
+  color:white;
+}
+
+input, textarea {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+}
+
+textarea {
+  height:100px;
+  resize:none;
+}
+
+.address {
+  font-size:10px;
+  margin-top:10px;
+  word-break:break-all;
+}
+
+.msg {
+  background:white;
+  color:black;
+  padding:8px;
+  border-radius:10px;
+  margin:10px 0;
+  font-size:12px;
+}
+
+.popup {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.hidden {
+  display:none;
+}
+
+.popup-box {
+  background:white;
+  padding:20px;
+  border-radius:15px;
+}
