@@ -1,101 +1,96 @@
-const ADDRESS = "MxG086HDR94WWW3ZJE24E807D5SQ7F5WUDQFNN9N221P89D698ZET9YK8832YJQ";
+const WALL_ADDRESS = "0xFFEEDDFFEEDD99";
 
 let status;
 
-function getWalletAddress(res) {
-    if (!res || !res.status) return null;
+window.onload = function(){
 
-    const d = res.data;
+  status = document.getElementById("status");
 
-    if (typeof d === "string") return d;
-    if (typeof d === "object") return d.address || d.data;
+  if(typeof MINIMASK !== "undefined"){
 
-    return null;
-}
+    MINIMASK.init(function(msg){
 
-window.onload = function () {
+      if(msg.event === "MINIMASK_INIT"){
 
-    status = document.getElementById("status");
-
-    if (typeof MINIMASK !== "undefined") {
-
-        MINIMASK.init(function (msg) {
-
-            if (msg.event === "MINIMASK_INIT") {
-
-                if (!msg.data || !msg.data.data || !msg.data.data.loggedon) {
-                    status.innerText = "❌ Not logged in";
-                    return;
-                }
-
-                status.innerText = "✅ Connected";
-            }
-        });
-
-    } else {
-        status.innerText = "❌ MiniMask not found";
-    }
-};
-
-function showSuccess() {
-    const popup = document.getElementById("successPopup");
-
-    popup.classList.remove("hidden");
-
-    setTimeout(() => {
-        popup.classList.add("hidden");
-    }, 2500);
-}
-
-function sendTip(amount) {
-
-    MINIMASK.account.getAddress(function (res) {
-
-        const wallet = getWalletAddress(res);
-
-        if (!wallet) {
-            alert("Wallet error");
-            return;
+        if(!msg.data.data.loggedon){
+          status.innerText = "❌ Not logged in";
+          return;
         }
 
-        const state = {};
-        state[0] = "tip";
+        status.innerText = "✅ Connected";
 
-        status.innerText = "⏳ Waiting...";
-
-        MINIMASK.account.send(
-            amount,
-            ADDRESS,
-            "0x00",
-            state,
-            function (resp) {
-
-               if (resp.pending) {
-
-    status.innerText = "⏳ Approve in MiniMask...";
-
-} else if (resp.success) {
-
-    status.innerText = "✅ Tip Sent!";
-    showSuccess();
-
-} else {
-
-    status.innerText = "❌ Transaction Failed";
-               }
-            }
-        );
+        loadMessages();
+      }
     });
-}
 
-function sendCustom() {
+  } else {
+    status.innerText = "❌ MiniMask not found";
+  }
+};
 
-    const val = document.getElementById("customAmount").value;
+function sendMessage(){
 
-    if (!val || isNaN(val)) {
-        alert("Enter valid amount");
-        return;
+  let msg = document.getElementById("id_sendmsg").value.trim();
+
+  if(msg === ""){
+    alert("Empty message");
+    return;
+  }
+
+  // 🔥 important: wake wallet (same fix as tipjar)
+  MINIMASK.account.getAddress(function(res){
+
+    if(!res || !res.status){
+      alert("Wallet error");
+      return;
     }
 
-    sendTip(parseFloat(val));
+    let state = {};
+    state[99] = "[" + new Date().toLocaleString() + "\n\n" + encodeURI(msg) + "]";
+
+    MINIMASK.account.send(
+      "0.00000001",
+      WALL_ADDRESS,
+      "0x00",
+      state,
+      function(resp){
+
+        console.log("Feed send:", resp);
+
+        if(resp.pending){
+          status.innerText = "⏳ Approve in MiniMask...";
+          document.getElementById("id_sendmsg").value = "";
+
+          // reload after delay
+          setTimeout(loadMessages, 5000);
+        }
+        else{
+          status.innerText = "❌ Failed";
+        }
+      }
+    );
+
+  });
+}
+
+function loadMessages(){
+
+  MINIMASK.meg.listcoins(WALL_ADDRESS, "", "", function(resp){
+
+    let html = "";
+
+    if(!resp || !resp.data || resp.data.length === 0){
+      html = "No messages yet";
+    }
+
+    resp.data.forEach(c=>{
+      try{
+        let msg = decodeURI(c.state[99] || "");
+        msg = msg.substring(1,msg.length-1);
+        html += `<div class="msg">${msg}</div>`;
+      }catch(e){}
+    });
+
+    document.getElementById("id_list_messages").innerHTML = html;
+  });
 }
